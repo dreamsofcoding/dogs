@@ -22,27 +22,20 @@ import javax.inject.Inject
 @HiltViewModel
 class ImagesViewModel @Inject constructor(
     private val repository: DogRepository,
-    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    private val breedName: String = checkNotNull(savedStateHandle["breedName"])
 
     private val _uiState = MutableStateFlow<UiState<List<DogImage>>>(UiState.Loading)
     val uiState: StateFlow<UiState<List<DogImage>>> = _uiState.asStateFlow()
 
-    private val _breedDisplayName = MutableStateFlow(breedName.replaceFirstChar { it.uppercase() })
+    private val _breedDisplayName = MutableStateFlow("")
     val breedDisplayName: StateFlow<String> = _breedDisplayName.asStateFlow()
 
     private var allImages: List<DogImage> = emptyList()
 
     var selectedHeroImage by mutableStateOf<DogImage?>(null)
 
-    init {
-        Timber.d("ImagesViewModel initialized for breed: $breedName")
-        loadImages()
-    }
-
-    fun loadImages() {
+    fun loadImages(breedName: String) {
+        _breedDisplayName.value = breedName.replaceFirstChar { it.uppercase() }
         Timber.d("Loading images for breed: $breedName")
         viewModelScope.launch {
             _uiState.value = UiState.Loading
@@ -64,11 +57,11 @@ class ImagesViewModel @Inject constructor(
 
     fun refreshImages() {
         _uiState.value = UiState.Loading
-        Timber.d("Refreshing images for breed: $breedName")
+        Timber.d("Refreshing images for breed: ${_breedDisplayName.value}")
         if (allImages.isNotEmpty()) {
             _uiState.value = UiState.Success(getRandomImages())
         } else {
-            loadImages()
+            loadImages(_breedDisplayName.value)
         }
     }
 
