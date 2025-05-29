@@ -34,6 +34,8 @@ import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import io.dreamsofcoding.dogs.model.DogImage
+import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
+import io.dreamsofcoding.dogs.ui.theme.DogsTheme
 import timber.log.Timber
 
 @Composable
@@ -120,5 +122,39 @@ fun ImagesItem(
                 }
             }
         }
+    }
+}
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ImagesItemLoadingPreview() {
+    DogsTheme {
+        ImagesItem(
+            image = DogImage(
+                url = "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+                localPath = "",
+                breed = "Afghan Hound"
+            ),
+            modifier = Modifier
+                .size(180.dp)
+        )
+    }
+}
+
+@MultiDeviceAndModePreview
+@Composable
+fun ImagesItemSelectedPreview() {
+    DogsTheme {
+        ImagesItem(
+            image = DogImage(
+                url = "https://images.dog.ceo/breeds/hound-afghan/n02088094_10263.jpg",
+                localPath = "",
+                breed = "Afghan Hound"
+            ),
+            isSelected = true,
+            modifier = Modifier
+                .size(180.dp)
+        )
     }
 }

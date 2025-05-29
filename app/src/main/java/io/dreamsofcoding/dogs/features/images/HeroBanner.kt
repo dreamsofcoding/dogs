@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import io.dreamsofcoding.dogs.model.DogImage
+import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
 
 @Composable
 fun HeroBanner(
@@ -41,4 +43,16 @@ fun HeroBanner(
             modifier = Modifier.fillMaxSize()
         )
     }
+}
+
+@MultiDeviceAndModePreview
+@Composable
+fun HeroBanner_Previews() {
+    HeroBanner(
+        image = DogImage(
+            url = "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            localPath = "",
+            breed = "Hound"
+        )
+    )
 }

@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.dreamsofcoding.dogs.features.images
 
+import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -34,8 +37,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.dreamsofcoding.dogs.R
+import io.dreamsofcoding.dogs.model.DogImage
 import io.dreamsofcoding.dogs.ui.common.ErrorScreen
 import io.dreamsofcoding.dogs.ui.common.LoadingScreen
+import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
+import io.dreamsofcoding.dogs.ui.common.UiError
 import io.dreamsofcoding.dogs.ui.common.UiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -147,6 +153,121 @@ fun ImagesScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ImagesScreen_LoadingPreview() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Breed") },
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        LoadingScreen(
+            message = stringResource(R.string.images_loading_images),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        )
+    }
+}
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ImagesScreen_ErrorPreview() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Breed") },
+                navigationIcon = { /*…*/ },
+                actions = { /*…*/ }
+            )
+        }
+    ) { padding ->
+        ErrorScreen(
+            error = UiError.NoNetwork,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        )
+    }
+}
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ImagesScreen_SuccessPreview() {
+    val images = listOf(
+        DogImage("https://images.dog.ceo/breeds/pug/DSCF7495-2.jpg","", "pug"),
+        DogImage("https://images.dog.ceo/breeds/pug/n02110958_10193.jpg","", "pug"),
+        DogImage("https://images.dog.ceo/breeds/pug/n02110958_12275.jpg","", "pug"),
+        DogImage("https://images.dog.ceo/breeds/pug/n02110958_13455.jpg","", "pug")
+    )
+
+    val hero = images.first()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Pug") },
+                navigationIcon = { /*…*/ },
+                actions = { /*…*/ }
+            )
+        }
+    ) { padding ->
+        val orientation = LocalConfiguration.current.orientation
+        val cells = if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+            StaggeredGridCells.Adaptive(minSize = 175.dp)
+        else StaggeredGridCells.Fixed(2)
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            // staggered grid
+            LazyVerticalStaggeredGrid(
+                columns = cells,
+                contentPadding = PaddingValues(top = 308.dp, start = 8.dp, end = 8.dp, bottom = 8.dp),
+                verticalItemSpacing = 8.dp,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(images, key = { it.url }) { img ->
+                    ImagesItem(
+                        image = img,
+                        isSelected = img.url == hero.url,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    ) {}
+                }
+            }
+
+            // hero banner
+            HeroBanner(
+                image = hero,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(horizontal = 8.dp)
+            )
         }
     }
 }

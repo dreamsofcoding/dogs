@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.dreamsofcoding.dogs.features.list
 
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +43,8 @@ import io.dreamsofcoding.dogs.R
 import io.dreamsofcoding.dogs.model.DogBreed
 import io.dreamsofcoding.dogs.ui.common.ErrorScreen
 import io.dreamsofcoding.dogs.ui.common.LoadingScreen
+import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
+import io.dreamsofcoding.dogs.ui.common.UiError
 import io.dreamsofcoding.dogs.ui.common.UiState
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -286,5 +290,149 @@ private fun ListContent(
                     .testTag(stringResource(R.string.alphabet_sidebar_test_tag))
             )
         }
+    }
+}
+
+
+
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ListScreen_LoadingPreview() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.dog_breeds)) },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.Search, contentDescription = null)
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        LoadingScreen(
+            message = stringResource(R.string.loading_dog_breeds),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .testTag(stringResource(R.string.list_loading_screen_test_tag))
+        )
+    }
+}
+
+@MultiDeviceAndModePreview
+@Composable
+fun ListScreen_ErrorPreview() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.dog_breeds)) },
+                actions = { /* no-op */ }
+            )
+        }
+    ) { padding ->
+        ErrorScreen(
+            onRetry = { /* no-op */ },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .testTag(stringResource(R.string.list_error_screen_test_tag)),
+            error = UiError.ServerError
+        )
+    }
+}
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ListScreen_SuccessPreview() {
+    val breeds = listOf(
+        DogBreed("beagle", "Beagle", emptyList()),
+        DogBreed("bulldog", "Bulldog", listOf("Boston")),
+        DogBreed("chihuahua", "Chihuahua", emptyList())
+    )
+
+    val images = mapOf(
+        "beagle" to "https://images.dog.ceo/breeds/beagle/n02088364_11136.jpg",
+        "bulldog" to "https://images.dog.ceo/breeds/bulldog-boston/n02096585_12716.jpg"
+    )
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.dog_breeds)) },
+                actions = { /* no-op */ }
+            )
+        }
+    ) { padding ->
+        ListContent(
+            breeds = breeds,
+            searchQuery = "",
+            breedImages = images,
+            onBreedClick = {},
+            onImageRequest = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        )
+    }
+}
+
+
+@MultiDeviceAndModePreview
+@Composable
+fun ListScreen_SearchPreview() {
+    val breeds = listOf(
+        DogBreed("beagle", "Beagle", emptyList()),
+        DogBreed("bulldog", "Bulldog", listOf("Boston")),
+        DogBreed("chihuahua", "Chihuahua", emptyList())
+    )
+
+    var searchVisible by remember { mutableStateOf(true) }
+    var query by remember { mutableStateOf("b") }
+
+    Scaffold(
+        topBar = {
+            Column {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.dog_breeds)) },
+                    actions = {
+                        IconButton(onClick = { searchVisible = !searchVisible; if (!searchVisible) query = "" }) {
+                            Icon(
+                                imageVector = if (searchVisible) Icons.Default.Clear else Icons.Default.Search,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                )
+                if (searchVisible) {
+                    OutlinedTextField(
+                        value = query,
+                        onValueChange = { query = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .testTag(stringResource(R.string.search_field_test_tag)),
+                        placeholder = { Text(stringResource(R.string.search_dog_breeds_dots)) },
+                        leadingIcon = {
+                            Icon(Icons.Default.Search, contentDescription = null)
+                        }
+                    )
+                }
+            }
+        }
+    ) { padding ->
+        ListContent(
+            breeds = breeds,
+            searchQuery = query,
+            breedImages = emptyMap(),
+            onBreedClick = {},
+            onImageRequest = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        )
     }
 }
