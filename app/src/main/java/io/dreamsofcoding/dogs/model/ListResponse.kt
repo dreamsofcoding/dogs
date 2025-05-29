@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.model
 
 import kotlinx.serialization.Serializable
 

@@ -1,5 +1,7 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.remote
 
+import io.dreamsofcoding.dogs.model.ImagesResponse
+import io.dreamsofcoding.dogs.model.ListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

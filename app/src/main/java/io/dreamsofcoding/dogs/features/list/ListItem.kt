@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.list
+package io.dreamsofcoding.dogs.features.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,8 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.Coil.imageLoader
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest

@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.list
+package io.dreamsofcoding.dogs.features.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

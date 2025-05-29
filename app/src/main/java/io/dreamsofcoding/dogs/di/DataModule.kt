@@ -2,16 +2,15 @@ package io.dreamsofcoding.dogs.di
 
 import android.content.Context
 import androidx.room.Room
-import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.dreamsofcoding.dogs.DogBreedDao
-import io.dreamsofcoding.dogs.DogDatabase
-import io.dreamsofcoding.dogs.DogImageDao
-import io.dreamsofcoding.dogs.DogService
+import io.dreamsofcoding.dogs.local.DogBreedDao
+import io.dreamsofcoding.dogs.local.DogDatabase
+import io.dreamsofcoding.dogs.local.DogImageDao
+import io.dreamsofcoding.dogs.remote.DogService
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.OkHttpClient

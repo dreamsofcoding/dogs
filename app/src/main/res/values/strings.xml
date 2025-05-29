@@ -47,4 +47,5 @@
     <string name="images_screen_grid_test_tag">images_screen_grid</string>
     <string name="images_screen_images_item_test_tag">images_screen_images_item</string>
     <string name="images_screen_hero_banner_test_tag">images_screen_hero_banner</string>
+    <string name="search_bar_visibility_content_description">search bar visibility</string>
 </resources>

@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.features
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.dreamsofcoding.dogs.R
 import io.dreamsofcoding.dogs.ui.common.Lottie
 import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
 import io.dreamsofcoding.dogs.ui.theme.DogsTheme

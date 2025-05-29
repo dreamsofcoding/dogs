@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.local
 
 import io.dreamsofcoding.dogs.model.DogBreed
 import io.dreamsofcoding.dogs.model.DogImage

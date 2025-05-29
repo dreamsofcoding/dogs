@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.list
+package io.dreamsofcoding.dogs.features.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,8 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -35,12 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.ImageLoader
 import io.dreamsofcoding.dogs.R
 import io.dreamsofcoding.dogs.model.DogBreed
 import io.dreamsofcoding.dogs.ui.common.ErrorScreen
 import io.dreamsofcoding.dogs.ui.common.LoadingScreen
-import io.dreamsofcoding.dogs.ui.common.UiError
 import io.dreamsofcoding.dogs.ui.common.UiState
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -55,44 +55,62 @@ fun ListScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val breedImages by viewModel.breedImages.collectAsStateWithLifecycle()
+    var isSearchVisible by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
             Column {
                 TopAppBar(
                     title = { Text(stringResource(R.string.dog_breeds)) },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                isSearchVisible = !isSearchVisible
+                                if (!isSearchVisible) {
+                                    viewModel.updateSearchQuery("")
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (isSearchVisible) Icons.Default.Clear else Icons.Default.Search,
+                                contentDescription = stringResource(R.string.search_bar_visibility_content_description))
+                        }
+                    },
                     modifier = Modifier.testTag(stringResource(R.string.list_screen_topbar_test_tag))
                 )
 
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = viewModel::updateSearchQuery,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .testTag(stringResource(R.string.search_field_test_tag)),
-                    placeholder = { Text(stringResource(R.string.search_dog_breeds_dots)) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.search)
-                        )
-                    },
-                    trailingIcon = {
-                        if (searchQuery.isNotEmpty()) {
-                            IconButton(
-                                onClick = { viewModel.updateSearchQuery("") },
-                                modifier = Modifier.testTag(stringResource(R.string.clear_search_button_test_tag))
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = stringResource(R.string.clear_search)
-                                )
+                if (isSearchVisible) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = viewModel::updateSearchQuery,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .testTag(stringResource(R.string.search_field_test_tag)),
+                        placeholder = { Text(stringResource(R.string.search_dog_breeds_dots)) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = stringResource(R.string.search)
+                            )
+                        },
+                        trailingIcon = {
+                            if (searchQuery.isNotEmpty()) {
+                                IconButton(
+                                    onClick = { viewModel.updateSearchQuery("") },
+                                    modifier = Modifier.testTag(stringResource(R.string.clear_search_button_test_tag))
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = stringResource(R.string.clear_search)
+                                    )
+                                }
                             }
-                        }
-                    },
-                    singleLine = true
-                )
+                        },
+                        singleLine = true
+                    )
+                }
             }
         },
         modifier = modifier.fillMaxSize()

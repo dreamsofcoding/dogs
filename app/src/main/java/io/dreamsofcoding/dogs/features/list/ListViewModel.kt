@@ -1,13 +1,11 @@
-package io.dreamsofcoding.dogs.list
+package io.dreamsofcoding.dogs.features.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.dreamsofcoding.dogs.DogRepository
-import io.dreamsofcoding.dogs.DogsException
 import io.dreamsofcoding.dogs.model.ApiResult
 import io.dreamsofcoding.dogs.model.DogBreed
-import io.dreamsofcoding.dogs.ui.common.UiError
 import io.dreamsofcoding.dogs.ui.common.UiState
 import io.dreamsofcoding.dogs.ui.common.mapToUiError
 import kotlinx.coroutines.flow.MutableStateFlow

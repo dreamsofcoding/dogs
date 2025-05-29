@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.images
+package io.dreamsofcoding.dogs.features.images
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import androidx.compose.foundation.ExperimentalFoundationApi

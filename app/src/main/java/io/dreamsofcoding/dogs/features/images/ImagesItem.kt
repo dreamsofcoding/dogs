@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.images
+package io.dreamsofcoding.dogs.features.images
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

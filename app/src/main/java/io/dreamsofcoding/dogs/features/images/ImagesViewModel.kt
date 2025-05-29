@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.images
+package io.dreamsofcoding.dogs.features.images
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

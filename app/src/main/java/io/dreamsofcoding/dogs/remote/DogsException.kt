@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.remote
 
 sealed class DogsException(
     message: String,
@@ -19,9 +19,7 @@ sealed class DogsException(
     class InvalidBreedException(
         breed: String,
         cause: Throwable? = null
-    ) : DogsException("Invalid breed: '$breed'", cause) {
-        val invalidBreed: String = breed
-    }
+    ) : DogsException("Invalid breed: '$breed'", cause)
 
     class UnknownException(
         message: String = "Unknown error occurred",

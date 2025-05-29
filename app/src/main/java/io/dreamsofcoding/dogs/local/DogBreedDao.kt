@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs
+package io.dreamsofcoding.dogs.local
 
 import androidx.room.Dao
 import androidx.room.Insert

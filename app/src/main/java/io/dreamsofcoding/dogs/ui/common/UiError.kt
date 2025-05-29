@@ -1,6 +1,6 @@
 package io.dreamsofcoding.dogs.ui.common
 
-import io.dreamsofcoding.dogs.DogsException
+import io.dreamsofcoding.dogs.remote.DogsException
 
 sealed class UiError {
     object NoNetwork : UiError()

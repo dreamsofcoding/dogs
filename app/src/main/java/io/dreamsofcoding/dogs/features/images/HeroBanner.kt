@@ -1,4 +1,4 @@
-package io.dreamsofcoding.dogs.images
+package io.dreamsofcoding.dogs.features.images
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth

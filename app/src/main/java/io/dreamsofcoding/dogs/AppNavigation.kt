@@ -8,15 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import coil.Coil.imageLoader
-import coil.ImageLoader
-import io.dreamsofcoding.dogs.images.ImagesScreen
-import io.dreamsofcoding.dogs.list.ListScreen
+import io.dreamsofcoding.dogs.features.SplashScreen
+import io.dreamsofcoding.dogs.features.images.ImagesScreen
+import io.dreamsofcoding.dogs.features.list.ListScreen
 import timber.log.Timber
 
 object Routes {
     const val SPLASH = "splash"
-    const val BREEDS = "breeds"
+    const val LIST = "list"
     const val IMAGES = "images/{breedName}"
 
     fun images(breedName: String) = "images/$breedName"
@@ -41,15 +40,15 @@ fun AppNavigation(
             Timber.d("Navigating to Splash screen")
             SplashScreen(
                 navToBreedsScreen = {
-                    navController.navigate(Routes.BREEDS) {
+                    navController.navigate(Routes.LIST) {
                         popUpTo(Routes.SPLASH) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Routes.BREEDS) {
-            Timber.d("Navigating to Breeds screen")
+        composable(Routes.LIST) {
+            Timber.d("Navigating to List screen")
             ListScreen(
                 onBreedClick = { breedName ->
                     Timber.d("Navigating to Images screen for breed: $breedName")
