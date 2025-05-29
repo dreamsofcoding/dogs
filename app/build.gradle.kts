@@ -87,4 +87,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.hilt.android)
+    androidTestImplementation(libs.hilt.navigation.compose)
+    kspAndroidTest(libs.hilt.compiler)
 }
