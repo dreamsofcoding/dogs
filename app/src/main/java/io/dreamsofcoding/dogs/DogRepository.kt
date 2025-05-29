@@ -5,13 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.dreamsofcoding.dogs.local.DogBreedDao
+import io.dreamsofcoding.dogs.local.DogDatabase
+import io.dreamsofcoding.dogs.local.DogImageDao
 import io.dreamsofcoding.dogs.local.EntityMapper.toDomainImageList
 import io.dreamsofcoding.dogs.local.EntityMapper.toDomainList
 import io.dreamsofcoding.dogs.local.EntityMapper.toEntityList
 import io.dreamsofcoding.dogs.local.EntityMapper.toImageEntityList
-import io.dreamsofcoding.dogs.local.DogBreedDao
-import io.dreamsofcoding.dogs.local.DogDatabase
-import io.dreamsofcoding.dogs.local.DogImageDao
 import io.dreamsofcoding.dogs.model.ApiResult
 import io.dreamsofcoding.dogs.model.DogBreed
 import io.dreamsofcoding.dogs.model.DogImage

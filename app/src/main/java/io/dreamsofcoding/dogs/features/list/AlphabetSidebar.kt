@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import io.dreamsofcoding.dogs.ui.common.MultiDeviceAndModePreview
 import io.dreamsofcoding.dogs.ui.theme.DogsTheme
 import kotlinx.coroutines.delay
-import kotlin.toString
 
 @Composable
 fun AlphabetSidebar(

@@ -3,7 +3,6 @@ package io.dreamsofcoding.dogs.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import io.dreamsofcoding.dogs.local.StringListConverter
 
 @Database(
     entities = [

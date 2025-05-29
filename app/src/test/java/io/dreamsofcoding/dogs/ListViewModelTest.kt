@@ -1,6 +1,5 @@
 package io.dreamsofcoding.dogs
 
-import io.dreamsofcoding.dogs.DogRepository
 import io.dreamsofcoding.dogs.features.list.ListViewModel
 import io.dreamsofcoding.dogs.model.ApiResult
 import io.dreamsofcoding.dogs.model.DogBreed
