@@ -72,7 +72,7 @@ class ListViewModel @Inject constructor(
 
         viewModelScope.launch {
             Timber.d("Loading image for breed: $breedName")
-            when (val result = repository.getBreedImages(breedName)) {
+            when (val result = repository.getBreedImages(breedName, 1)) {
                 is ApiResult.Success -> {
                     val images = result.data
                     if (images.isNotEmpty()) {

@@ -16,4 +16,7 @@ interface DogImageDao {
 
     @Query("DELETE FROM dog_images WHERE breed = :breed")
     suspend fun clearImagesForBreed(breed: String)
+
+    @Query("UPDATE dog_images SET localPath = :path, cachedAt = :timestamp WHERE url = :url")
+    suspend fun updateImagePath(url: String, path: String, timestamp: Long)
 }

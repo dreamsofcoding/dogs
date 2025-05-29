@@ -28,12 +28,10 @@ object EntityMapper {
         return map { it.toEntity() }
     }
 
-
-
-
     fun DogImage.toEntity(): DogImageEntity {
         return DogImageEntity(
             url = url,
+            localPath = localPath,
             breed = breed,
             cachedAt = System.currentTimeMillis()
         )
@@ -42,6 +40,7 @@ object EntityMapper {
     fun DogImageEntity.toDomain(): DogImage {
         return DogImage(
             url = url,
+            localPath = localPath,
             breed = breed
         )
     }

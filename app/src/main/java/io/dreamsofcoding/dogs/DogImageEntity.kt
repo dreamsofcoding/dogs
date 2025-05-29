@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class DogImageEntity(
     @PrimaryKey
     val url: String,
+    val localPath: String,
     val breed: String,
     val cachedAt: Long = System.currentTimeMillis()
 )

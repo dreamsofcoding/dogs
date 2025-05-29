@@ -1,5 +1,10 @@
 package io.dreamsofcoding.dogs
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.dreamsofcoding.dogs.EntityMapper.toDomainImageList
 import io.dreamsofcoding.dogs.EntityMapper.toDomainList
 import io.dreamsofcoding.dogs.EntityMapper.toEntityList
@@ -7,10 +12,16 @@ import io.dreamsofcoding.dogs.EntityMapper.toImageEntityList
 import io.dreamsofcoding.dogs.model.ApiResult
 import io.dreamsofcoding.dogs.model.DogBreed
 import io.dreamsofcoding.dogs.model.DogImage
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.HttpException
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -21,7 +32,9 @@ import javax.inject.Singleton
 class DogRepository @Inject constructor(
     private val service: DogService,
     private val breedDao: DogBreedDao,
-    private val imageDao: DogImageDao
+    private val imageDao: DogImageDao,
+    private val okHttpClient: OkHttpClient,
+    @ApplicationContext private val context: Context
 ) {
 
     /**
@@ -105,7 +118,7 @@ class DogRepository @Inject constructor(
 
             if (cached.isNotEmpty()
                 && cached.first().cachedAt > expiry
-                && (count == null || cached.size >= count)
+                && (cached.size > 1)
             ) {
                 Timber.d("Returning ${cached.size} cached images")
                 return@withContext ApiResult.Success(
@@ -134,6 +147,7 @@ class DogRepository @Inject constructor(
             val images = mapImages(response, normalized)
             imageDao.clearImagesForBreed(normalized)
             imageDao.insertImages(images.toImageEntityList())
+            downloadImagesAsync(images)
 
             Timber.d("Cached ${images.size} images for $normalized")
             ApiResult.Success(images)
@@ -159,8 +173,50 @@ class DogRepository @Inject constructor(
         return response.message.map { imageUrl ->
             DogImage(
                 url = imageUrl,
+                localPath = "",
                 breed = breed
             )
+        }
+    }
+
+    private fun downloadImagesAsync(images: List<DogImage>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            images.forEach { image ->
+                val localPath = downloadImage(image.url, image.breed)
+                if (localPath != null) {
+                    val updated = image.copy(localPath = localPath)
+                    imageDao.updateImagePath(updated.url, updated.localPath, System.currentTimeMillis())
+                    Timber.d("Downloaded image for ${image.breed} to $localPath")
+                }
+            }
+        }
+    }
+
+    private fun downloadImage(url: String, breed: String): String? {
+        return try {
+            val request = Request.Builder().url(url).build()
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return null
+
+                val inputStream = response.body?.byteStream() ?: return null
+                val bitmap = BitmapFactory.decodeStream(inputStream) ?: return null
+
+                val fileName = "${breed}_${System.currentTimeMillis()}.webp"
+                val file = File(context.filesDir, fileName)
+
+                FileOutputStream(file).use { out ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, out)
+                    } else {
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, 90, out)
+                    }
+                }
+
+                file.absolutePath
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error downloading or converting image")
+            null
         }
     }
 

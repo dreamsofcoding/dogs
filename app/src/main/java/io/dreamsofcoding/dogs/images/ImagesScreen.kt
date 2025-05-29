@@ -35,7 +35,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.dreamsofcoding.dogs.R
 import io.dreamsofcoding.dogs.ui.common.ErrorScreen
 import io.dreamsofcoding.dogs.ui.common.LoadingScreen
-import io.dreamsofcoding.dogs.ui.common.UiError
 import io.dreamsofcoding.dogs.ui.common.UiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
